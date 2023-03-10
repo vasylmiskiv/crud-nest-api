@@ -7,7 +7,6 @@ import { AuthDto } from './dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @HttpCode(HttpStatus.OK)
   @Post('signup')
   signup(@Body() dto: AuthDto) {
     console.log({
