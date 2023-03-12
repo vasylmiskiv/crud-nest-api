@@ -13,17 +13,6 @@ export class BookmarkService {
     });
   }
 
-  getBookmarkById(userId: number, bookmarkId: number) {
-    const bookmarksByUserId = this.prisma.bookmark.findFirst({
-      where: {
-        id: bookmarkId,
-        userId,
-      },
-    });
-
-    return bookmarksByUserId;
-  }
-
   async createBookmark(userId: number, dto: CreateBookmarkDto) {
     const bookmark = await this.prisma.bookmark.create({
       data: {
@@ -33,6 +22,17 @@ export class BookmarkService {
     });
 
     return bookmark;
+  }
+
+  getBookmarkById(userId: number, bookmarkId: number) {
+    const bookmarksByUserId = this.prisma.bookmark.findFirst({
+      where: {
+        id: bookmarkId,
+        userId,
+      },
+    });
+
+    return bookmarksByUserId;
   }
 
   async editBookmarkById(

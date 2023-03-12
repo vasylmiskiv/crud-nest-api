@@ -6,7 +6,6 @@ import { AppModule } from '../src/app.module';
 import * as pactum from 'pactum';
 import { AuthDto } from 'src/auth/dto';
 import { EditUserDto } from 'src/user/dto';
-import { inspect } from 'util';
 import { CreateBookmarkDto, EditBookmarkDto } from 'src/bookmark/dto';
 
 describe('App e2e', () => {
@@ -34,7 +33,7 @@ describe('App e2e', () => {
 
   describe('Auth', () => {
     const dto: AuthDto = {
-      email: 'exmpale@gmail.com',
+      email: 'example@gmail.com',
       password: '123',
     };
     describe('Signup', () => {
@@ -57,9 +56,11 @@ describe('App e2e', () => {
           })
           .expectStatus(400);
       });
+
       it('should throw if no body provided', () => {
         return pactum.spec().post('/auth/signup').expectStatus(400);
       });
+
       it('should signup', () => {
         return pactum
           .spec()
@@ -68,6 +69,7 @@ describe('App e2e', () => {
           .expectStatus(201);
       });
     });
+
     describe('Signin', () => {
       it('should throw if email is empty', () => {
         return pactum
@@ -88,9 +90,11 @@ describe('App e2e', () => {
           })
           .expectStatus(400);
       });
+
       it('should throw if no body provided', () => {
         return pactum.spec().post('/auth/signin').expectStatus(400);
       });
+
       it('should signin', () => {
         return pactum
           .spec()
@@ -101,6 +105,7 @@ describe('App e2e', () => {
       });
     });
   });
+
   describe('User', () => {
     describe('Get me', () => {
       it('should get current user', () => {
@@ -113,11 +118,12 @@ describe('App e2e', () => {
           .expectStatus(200);
       });
     });
+
     describe('Edit user', () => {
       it('should edit the user', () => {
         const dto: EditUserDto = {
-          firstName: '',
-          email: '111@gmail.com',
+          firstName: 'FirstName',
+          email: 'example@gmail.com',
         };
         return pactum
           .spec()
@@ -132,6 +138,7 @@ describe('App e2e', () => {
       });
     });
   });
+
   describe('Bookmarks', () => {
     describe('Get bookmarks', () => {
       it('should get bookmarks', () => {
@@ -144,6 +151,7 @@ describe('App e2e', () => {
           .expectStatus(200);
       });
     });
+
     describe('Create bookmark', () => {
       const dto: CreateBookmarkDto = {
         title: 'First Bookmark',
@@ -152,7 +160,7 @@ describe('App e2e', () => {
       it('should create a bookmark', () => {
         return pactum
           .spec()
-          .get('/bookmarks')
+          .post('/bookmarks')
           .withHeaders({
             Authorization: `Bearer $S{userAt}`,
           })
@@ -161,19 +169,21 @@ describe('App e2e', () => {
           .stores('bookmarkId', 'id');
       });
     });
+
     describe('Get bookmark by id', () => {
       it('should get bookmark by id', () => {
         return pactum
           .spec()
-          .get(`/bookmarks/{id}`)
-          .withPathParams('id', '$S(bookmarkId')
+          .get('/bookmarks/{id}')
+          .withPathParams('id', '$S{bookmarkId}')
           .withHeaders({
-            Authorization: `Bearer $S{userAt}`,
+            Authorization: 'Bearer $S{userAt}',
           })
           .expectStatus(200)
-          .expectBodyContains('$S(bookmarkId');
+          .expectBodyContains('$S{bookmarkId}');
       });
     });
+
     describe('Edit bookmark by id', () => {
       const dto: EditBookmarkDto = {
         title: '123',
@@ -182,8 +192,8 @@ describe('App e2e', () => {
       it('should edit bookmark', () => {
         return pactum
           .spec()
-          .patch(`/bookmarks/{id}`)
-          .withPathParams('id', '$S(bookmarkId')
+          .patch('/bookmarks/{id}')
+          .withPathParams('id', '$S{bookmarkId}')
           .withHeaders({
             Authorization: `Bearer $S{userAt}`,
           })
@@ -194,27 +204,17 @@ describe('App e2e', () => {
           .inspect();
       });
     });
+
     describe('Delete bookmark by id', () => {
       it('should delete bookmark', () => {
         return pactum
           .spec()
           .delete(`/bookmarks/{id}`)
-          .withPathParams('id', '$S(bookmarkId')
+          .withPathParams('id', '$S{bookmarkId}')
           .withHeaders({
             Authorization: `Bearer $S{userAt}`,
           })
           .expectStatus(204);
-      });
-
-      it('should get empty bookmarks', () => {
-        return pactum
-          .spec()
-          .patch('/bookmarks')
-          .withHeaders({
-            Authorization: `Bearer $S{userAt}`,
-          })
-          .expectStatus(204)
-          .expectJsonLength(0);
       });
     });
   });

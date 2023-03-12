@@ -25,20 +25,20 @@ export class BookmarkController {
     return this.bookmarkService.getBookmarks(userId);
   }
 
-  @Get(':id')
-  getBookmarkById(
-    @GetUser('id') userId: number,
-    @Param('id', ParseIntPipe) bookmarkId: number,
-  ) {
-    return this.bookmarkService.getBookmarkById(userId, bookmarkId);
-  }
-
   @Post()
   createBookmark(
     @GetUser('id') userId: number,
     @Body() dto: CreateBookmarkDto,
   ) {
     return this.bookmarkService.createBookmark(userId, dto);
+  }
+
+  @Get(':id')
+  getBookmarkById(
+    @GetUser('id') userId: number,
+    @Param('id', ParseIntPipe) bookmarkId: number,
+  ) {
+    return this.bookmarkService.getBookmarkById(userId, bookmarkId);
   }
 
   @Patch(':id')

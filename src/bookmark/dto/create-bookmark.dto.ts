@@ -6,10 +6,10 @@ export class CreateBookmarkDto {
   title: string;
 
   @IsString()
-  @IsOptional()
-  description?: string;
-
-  @IsString()
   @IsNotEmpty()
   link: string;
+
+  @IsString()
+  @IsOptional()
+  description?: string;
 }

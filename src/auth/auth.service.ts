@@ -42,6 +42,7 @@ export class AuthService {
           email: dto.email,
           hash,
         },
+        /* { optional }*/
         // select: {
         //   id: true,
         //   email: true,
