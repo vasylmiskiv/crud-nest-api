@@ -4,6 +4,7 @@ import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiOperation,
   ApiTags,
 } from '@nestjs/swagger/dist';
 import { AuthService } from './auth.service';
@@ -15,6 +16,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('signup')
+  @ApiOperation({ summary: 'Register a new user' })
   @ApiCreatedResponse({
     description: 'User has been successfully created',
     type: signTokenDto,
@@ -28,6 +30,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('signin')
+  @ApiOperation({ summary: 'Login' })
   @ApiOkResponse({
     description: 'User has been successfully signed in',
     type: signTokenDto,

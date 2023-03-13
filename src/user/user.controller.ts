@@ -3,6 +3,7 @@ import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
 import { User } from '@prisma/client';
@@ -17,6 +18,7 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private userService: UserService) {}
   @Get('me')
+  @ApiOperation({ summary: 'Get user information' })
   @ApiOkResponse({
     description: 'Users personal information',
     type: EditUserDto,
@@ -29,6 +31,7 @@ export class UserController {
   }
 
   @Patch('me')
+  @ApiOperation({ summary: 'Update user iformation' })
   @ApiCreatedResponse({
     description: 'Users personal information',
     type: EditUserDto,
